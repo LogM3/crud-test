@@ -2,9 +2,9 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, status, Query
 
-from schema.items import ItemSchema, ItemCreateSchema, ItemUpdateSchema
-from services.items import ItemService
-from dependency import get_item_service
+from app.schema.items import ItemSchema, ItemCreateSchema, ItemUpdateSchema
+from app.services.items import ItemService
+from app.dependency import get_item_service
 
 
 router: APIRouter = APIRouter(prefix='/items', tags=['crud'])
@@ -14,7 +14,7 @@ router: APIRouter = APIRouter(prefix='/items', tags=['crud'])
     '/{item_id}',
     response_model=ItemSchema,
     responses={404: {'description': 'Item not found'}},
-    description=''
+    description='Получить сущность по id'
 )
 async def get(
     item_id: int,
@@ -23,7 +23,11 @@ async def get(
     return await service.get_item(item_id)
 
 
-@router.get('/', response_model=list[ItemSchema])
+@router.get(
+        '/',
+        response_model=list[ItemSchema],
+        description='Получить все сущности'
+)
 async def list(
     service: Annotated[ItemService, Depends(get_item_service)],
     limit: int = Query(ge=1, description='Макс. кол-во записей', default=20),
@@ -36,7 +40,8 @@ async def list(
     '/',
     response_model=ItemSchema,
     status_code=status.HTTP_201_CREATED,
-    responses={409: {'description': 'Title must be unique'}}
+    responses={409: {'description': 'Title must be unique'}},
+    description='Создать сущность'
 )
 async def create(
     item: ItemCreateSchema,
@@ -51,7 +56,8 @@ async def create(
     responses={
         404: {'description': 'Item not found'},
         409: {'description': 'Title must be unique'}
-    }
+    },
+    description='Изменить сущность по id'
 )
 async def update(
     item_id: int,
@@ -64,7 +70,8 @@ async def update(
 @router.delete(
     '/{item_id}',
     status_code=status.HTTP_204_NO_CONTENT,
-    responses={404: {'description': 'Item not found'}}
+    responses={404: {'description': 'Item not found'}},
+    description='Удалить сущность по id'
 )
 async def delete(
     item_id: int,

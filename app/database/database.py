@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker
 )
 
-from settings import settings
+from app.settings import settings
 
 
 class Base(DeclarativeBase):

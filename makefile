@@ -1,2 +1,5 @@
 run:
-	uvicorn main:app --reload
+	uvicorn app.main:app --reload
+
+requirements:
+	pip freeze > requirements.txt

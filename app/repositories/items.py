@@ -3,8 +3,8 @@ from typing import Sequence
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, insert, delete
 
-from database.models import Item
-from schema.items import ItemCreateSchema, ItemUpdateSchema
+from app.database.models import Item
+from app.schema.items import ItemCreateSchema, ItemUpdateSchema
 
 
 class ItemRepository:
@@ -50,11 +50,15 @@ class ItemRepository:
 
     async def update_item(
         self,
-        item: Item,
+        item_id: int,
         data: ItemUpdateSchema
     ) -> Item:
+        update_data = data.model_dump(exclude_unset=True)
         async with self.session as session:
-            update_data = data.model_dump(exclude_unset=True)
+            item: Item = (
+                await session.execute(select(Item).where(Item.id == item_id))
+            ).scalar_one()
+
             for field, value in update_data.items():
                 setattr(item, field, value)
 
@@ -63,8 +67,8 @@ class ItemRepository:
 
     async def delete_item(
             self,
-            item: Item
+            item_id: int
     ) -> None:
         async with self.session as session:
-            await session.execute(delete(Item))
+            await session.execute(delete(Item).where(Item.id == item_id))
             await session.commit()

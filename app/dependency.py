@@ -1,9 +1,9 @@
-from database.database import get_db_connection
-from repositories.items import ItemRepository
-from services.items import ItemService
-
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.database.database import get_db_connection
+from app.repositories.items import ItemRepository
+from app.services.items import ItemService
 
 
 async def get_item_repository(

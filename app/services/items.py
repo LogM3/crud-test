@@ -2,10 +2,10 @@ from typing import Sequence
 
 from fastapi import HTTPException
 
-from database.models import Item
-from repositories.items import ItemRepository
-from schema.items import ItemCreateSchema, ItemUpdateSchema
-from exceptions import ItemIdNotExists, ItemTitleDuplicated
+from app.database.models import Item
+from app.repositories.items import ItemRepository
+from app.schema.items import ItemCreateSchema, ItemUpdateSchema
+from app.exceptions import ItemIdNotExists, ItemTitleDuplicated
 
 
 class ItemService:
@@ -47,11 +47,11 @@ class ItemService:
             if await self.repo.check_item_title_duplicate(item_data.title):
                 raise ItemTitleDuplicated()
 
-        return await self.repo.update_item(item, item_data)
+        return await self.repo.update_item(item.id, item_data)
 
     async def delete_item(self, item_id: int) -> None | HTTPException:
         item: Item | None = await self.repo.get_item(item_id)
         if not item:
             raise ItemIdNotExists()
 
-        await self.repo.delete_item(item)
+        await self.repo.delete_item(item.id)
