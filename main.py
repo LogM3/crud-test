@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from handlers.crud import router as crud_router
+from handlers.items import router as crud_router
 
 
 app: FastAPI = FastAPI()
