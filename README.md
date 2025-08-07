@@ -14,8 +14,8 @@ docker compose up -d
 docker exec crud-app alembic upgrade head
 ```
 
-Теперь можно пользоваться приложением по адресу:
+Вся документация доступна по адресу:
 
 ```
-localhost:8000
+localhost:8000/docs
 ```
