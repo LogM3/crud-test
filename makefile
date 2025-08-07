@@ -1,5 +1,8 @@
 run:
 	uvicorn app.main:app --reload
 
-requirements:
-	pip freeze > requirements.txt
+makemigrations:
+	alembic revision --autogenerate
+
+migrate:
+	alembic upgrade head

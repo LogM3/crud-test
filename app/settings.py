@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     DB_PASSWORD: str = 'password'
     DB_HOST: str = 'postgres'
     DB_PORT: int = 5432
-    DB_NAME: str = 'postgres'
+    DB_NAME: str = 'crud_app'
 
     @property
     def db_url(self) -> str:
