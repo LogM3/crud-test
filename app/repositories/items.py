@@ -11,13 +11,6 @@ class ItemRepository:
     def __init__(self, session: AsyncSession) -> None:
         self.session: AsyncSession = session
 
-    # async def check_item_id_exists(self, item_id: int) -> bool:
-    #     async with self.session as session:
-    #         result = await session.execute(
-    #             select(Item).where(Item.id == item_id)
-    #         )
-    #     return True if result.first() else False
-
     async def check_item_title_duplicate(self, title: str) -> bool:
         async with self.session as session:
             print(type(Item.title))
